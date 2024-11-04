@@ -1,12 +1,20 @@
 const passport = require("passport");
-const { sign_upAsync } = require("../controller/Auth");
+const {
+  createUserAsync,
+  checkAuth,
+  logoutUser,
+} = require("../controller/Auth");
+const { protectRoute } = require("../middleware/common");
 
 const router = require("express").Router();
 
 router
-  .post("/sign-up", sign_upAsync)
+  .post("/sign-up", createUserAsync)
   .post("/login", passport.authenticate("local"), (req, res) => {
-    res.json({ message: "Logged in successfully" });
-  });
+    
+    res.json({ message: "Logged in successfully", user: req.user });
+  })
+  .post("/logout", logoutUser)
+  .get("/check-auth", protectRoute, checkAuth);
 
 exports.router = router;

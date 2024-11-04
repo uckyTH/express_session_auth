@@ -21,26 +21,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/auth", authRouter.router);
-app.get("/all-sessions", async (req, res) => {
-  try {
-    const sessions = await redisClient.keys("sess:*");
-    const allSessionData = await Promise.all(
-      sessions.map(async (sessionKey) => {
-        const sessionData = await redisClient.get(sessionKey);
-        return { key: sessionKey, data: JSON.parse(sessionData) };
-      })
-    );
-    res.json(allSessionData);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-app.get("/profile", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json({ loggedIn: true, user: req.user });
-  } else {
-    res.json({ loggedIn: false });
-  }
-});
+
 
 module.exports = app;

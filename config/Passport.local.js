@@ -15,7 +15,12 @@ passport.use(
         const isMatch = await user.comparedPassword(password);
         if (!isMatch)
           return done(null, false, { message: "E-mail or Password incorrect" });
-        return done(null, { id: user.id });
+        return done(null, {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        });
       } catch (error) {
         return done(error);
       }
@@ -23,14 +28,16 @@ passport.use(
   )
 );
 
-// this creates session variable req.user on being called from callbacks
 passport.serializeUser(function (user, cb) {
   process.nextTick(function () {
-    return cb(null, { id: user.id });
+    return cb(null, {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    });
   });
 });
-
-// this changes session variable req.user when called from authorized request
 
 passport.deserializeUser(function (user, cb) {
   process.nextTick(function () {
