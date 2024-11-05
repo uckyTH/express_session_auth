@@ -67,7 +67,7 @@ exports.logoutUser = async (req, res) => {
 
 exports.checkAuth = async (req, res) => {
   try {
-    return res.status(200).json(req.user);
+    return res.status(200).json({ loggedIn: true, user: req.user });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

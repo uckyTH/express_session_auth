@@ -30,12 +30,7 @@ passport.use(
 
 passport.serializeUser(function (user, cb) {
   process.nextTick(function () {
-    return cb(null, {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    });
+    return cb(null, user);
   });
 });
 
